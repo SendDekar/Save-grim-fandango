@@ -1,0 +1,28 @@
+import struct
+
+def read_binary_file(file_path):
+    with open(file_path, "rb") as file:
+        return file.read()
+
+def write_binary_file(file_path, data):
+    with open(file_path, "wb") as file:
+        file.write(data)
+
+def repair_save_file(broken_file, working_file, output_file):
+    broken_data = read_binary_file(broken_file)
+    working_data = read_binary_file(working_file)
+
+    # Example: Assuming the first 1024 bytes contain meta info we want from the broken file
+    repaired_data = bytearray(working_data)
+    repaired_data[:1024] = broken_data[:1024]
+
+    write_binary_file(output_file, repaired_data)
+    print(f"Repaired save file written to {output_file}")
+
+if __name__ == "__main__":
+    # Provide paths to your files
+    broken_file_path = "grim.gsv"
+    working_file_path = "ggrim.gsv"
+    output_file_path = "repaired_ggrim.gsv"
+
+    repair_save_file(broken_file_path, working_file_path, output_file_path)
